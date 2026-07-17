@@ -101,7 +101,7 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/$/, "");
 
   const validate = useCallback(
     (field: keyof FormData, value: string | boolean) => {

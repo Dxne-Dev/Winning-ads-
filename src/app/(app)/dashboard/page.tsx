@@ -13,6 +13,8 @@ import {
   IconBrain,
   IconZap,
   IconCheck,
+  IconSearch,
+  IconTarget,
 } from "@/components/icons";
 
 const QUICK = [
@@ -85,20 +87,42 @@ export default async function DashboardPage() {
     },
   ];
 
+  const userName = user?.email?.split("@")[0] ?? "there";
+
   return (
     <div className="space-y-8">
-      <PageHeader
-        title="Dashboard"
-        description="Your Meta ads intelligence overview."
-        action={
-          <Link href="/ads">
-            <Button size="sm">
-              Explore ads
-              <IconArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        }
-      />
+      <Card className="bg-gradient-to-br from-primary/5 via-card to-cta/5 p-6 md:p-8">
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-xl font-bold tracking-tight md:text-2xl">
+              What would you like to do today?
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Hey {userName} — pick an action to get started.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/ads">
+              <Button size="sm" variant="outline">
+                <IconSearch className="h-4 w-4" />
+                Discover winners
+              </Button>
+            </Link>
+            <Link href="/saved">
+              <Button size="sm" variant="outline">
+                <IconBookmark className="h-4 w-4" />
+                My favorites
+              </Button>
+            </Link>
+            <Link href="/projects">
+              <Button size="sm" variant="outline">
+                <IconFolder className="h-4 w-4" />
+                My projects
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </Card>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (

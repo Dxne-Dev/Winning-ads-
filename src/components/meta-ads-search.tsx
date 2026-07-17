@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { IconGrid, IconSearch, IconArrowRight, IconSparkles } from "@/components/icons";
+import { cn } from "@/lib/utils";
+import { IconGrid, IconSearch, IconArrowRight, IconSparkles, IconTarget } from "@/components/icons";
 
 type FoundAd = {
   source: string;
@@ -19,9 +20,40 @@ type FoundAd = {
   niche: string | null;
 };
 
+const NICHE_PRESETS = [
+  "fitness",
+  "beauty",
+  "skincare",
+  "finance",
+  "saas",
+  "ecommerce",
+  "fashion",
+  "health",
+  "real estate",
+  "education",
+];
+
+const FORMATS = [
+  { value: "ALL", label: "All formats" },
+  { value: "VIDEO", label: "Video" },
+  { value: "IMAGE", label: "Image" },
+  { value: "CAROUSEL", label: "Carousel" },
+];
+
+const COUNTRIES = [
+  { value: "US", label: "United States" },
+  { value: "UK", label: "United Kingdom" },
+  { value: "CA", label: "Canada" },
+  { value: "AU", label: "Australia" },
+  { value: "DE", label: "Germany" },
+  { value: "FR", label: "France" },
+];
+
 export function MetaAdsSearch() {
   const router = useRouter();
   const [query, setQuery] = useState("");
+  const [adType, setAdType] = useState("ALL");
+  const [country, setCountry] = useState("US");
   const [results, setResults] = useState<FoundAd[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -29,14 +61,21 @@ export function MetaAdsSearch() {
   const [imported, setImported] = useState(0);
   const [selected, setSelected] = useState<Set<number>>(new Set());
 
-  async function search() {
-    if (!query.trim()) return;
+  async function search(niche?: string) {
+    const term = niche ?? query.trim();
+    if (!term) return;
+    if (niche) setQuery(niche);
     setLoading(true);
     setError("");
     setResults([]);
     setImported(0);
     try {
-      const res = await fetch(`/api/meta-ads?q=${encodeURIComponent(query.trim())}`);
+      const params = new URLSearchParams({
+        q: term,
+        ad_type: adType,
+        country,
+      });
+      const res = await fetch(`/api/meta-ads?${params}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Search failed");
       setResults(data.ads ?? []);
@@ -82,20 +121,66 @@ export function MetaAdsSearch() {
 
   return (
     <div className="space-y-6">
-      <div className="flex gap-2">
-        <div className="relative flex-1">
-          <IconSearch className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && search()}
-            placeholder='Search Meta Ads Library (e.g. "fitness", "beauty", "finance")'
-            className="pl-10"
-          />
+      <div className="space-y-4">
+        <div className="flex flex-wrap gap-2">
+          <div className="relative flex-1">
+            <IconSearch className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && search()}
+              placeholder='Search Meta Ads Library (e.g. "fitness", "beauty", "finance")'
+              className="pl-10"
+            />
+          </div>
+          <Button onClick={() => search()} disabled={loading || !query.trim()}>
+            {loading ? "Searching..." : "Search"}
+          </Button>
         </div>
-        <Button onClick={search} disabled={loading || !query.trim()}>
-          {loading ? "Searching..." : "Search"}
-        </Button>
+
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          <IconTarget className="h-4 w-4 text-muted-foreground" />
+          {NICHE_PRESETS.map((n) => (
+            <button
+              key={n}
+              onClick={() => search(n)}
+              className="rounded-full border border-border bg-muted/30 px-3 py-1 text-xs font-medium text-muted-foreground transition-all hover:border-primary hover:text-foreground"
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <div className="flex items-center gap-2">
+            <label className="text-xs text-muted-foreground">Format</label>
+            <select
+              value={adType}
+              onChange={(e) => setAdType(e.target.value)}
+              className="rounded-lg border border-border bg-muted/30 px-2.5 py-1.5 text-xs text-foreground"
+            >
+              {FORMATS.map((f) => (
+                <option key={f.value} value={f.value}>
+                  {f.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-xs text-muted-foreground">Country</label>
+            <select
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              className="rounded-lg border border-border bg-muted/30 px-2.5 py-1.5 text-xs text-foreground"
+            >
+              {COUNTRIES.map((c) => (
+                <option key={c.value} value={c.value}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
 
       {error && (

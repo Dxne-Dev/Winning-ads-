@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { analyzeAd } from "@/lib/openai";
 import { createServerClientForApp } from "@/lib/supabase/server";
-import type { Ad } from "@/types";
+import type { RemixRequest } from "@/types";
 
 export async function POST(request: Request) {
   const supabase = await createServerClientForApp();
@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const body = (await request.json()) as Partial<Ad>;
+  const body = (await request.json()) as RemixRequest;
   const analysis = await analyzeAd(body);
 
   await supabase

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { remixAd } from "@/lib/openai";
+import { remixVariations } from "@/lib/openai";
 import { createServerClientForApp } from "@/lib/supabase/server";
 import type { RemixRequest } from "@/types";
 
@@ -11,11 +11,11 @@ export async function POST(request: Request) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = (await request.json()) as RemixRequest;
-  const remix = await remixAd(body);
+  const result = await remixVariations(body);
 
   await supabase
     .from("ai_generations")
-    .insert({ user_id: user.id, ad_id: body.id ?? null, remix });
+    .insert({ user_id: user.id, ad_id: body.id ?? null, remix: result });
 
-  return NextResponse.json({ remix });
+  return NextResponse.json(result);
 }

@@ -11,6 +11,8 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("q");
+  const adType = searchParams.get("ad_type") || "ALL";
+  const country = searchParams.get("country") || "US";
 
   if (!query?.trim()) {
     return NextResponse.json({ error: "Query required" }, { status: 400 });
@@ -29,6 +31,8 @@ export async function GET(request: Request) {
       search_terms: query.trim(),
       limit: 25,
       ad_active_status: "ALL",
+      ad_type: adType,
+      ad_reached_countries: [country],
     },
     accessToken,
   );

@@ -39,6 +39,9 @@ export type AdAnalysis = {
   copy_structure: string;
   cta: string;
   score: number;
+  ctr_estimate: string;
+  active_days: string;
+  engagement_level: string;
 };
 
 export type AdRemix = {
@@ -47,6 +50,31 @@ export type AdRemix = {
   cta: string;
   image_prompts: string[];
   ugc_video_script: string;
+};
+
+export type AdVariations = {
+  variations: {
+    hook: string;
+    headline: string;
+    ad_copy: string;
+    cta: string;
+    image_prompt: string;
+    ugc_script: string;
+  }[];
+};
+
+export type RemixRequest = {
+  id?: string;
+  headline?: string;
+  body?: string;
+  cta?: string;
+  advertiser?: string;
+  niche?: string;
+  brand?: string;
+  product?: string;
+  tone?: string;
+  goal?: string;
+  variations?: number;
 };
 
 export type AiGeneration = {

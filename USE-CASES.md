@@ -441,14 +441,15 @@ Le MVP ne vend pas une bibliothèque de publicités. Il vend un **accélérateur
 
 | Fonctionnalité du use case | Statut MVP | Notes |
 |---------------------------|------------|-------|
-| Dashboard avec actions guidées | ❌ | Le dashboard actuel affiche des stats, pas de prompts "Que souhaitez-vous faire ?" |
+| Dashboard avec actions guidées | ✅ | Le dashboard a "What would you like to do today?" + boutons Discover winners / My favorites / My projects + Quick actions cards (Browse ad library / Analyze an ad / Create a project |
 | Recherche par niche / pays / format / langue | ❌ | La recherche Meta Ads Library est un champ text libre sans facettes |
-| Score estimé avec CTR | ❌ | L'analyse AI produit un score mais pas de CTR estimé ni durée d'activité |
+| Score estimé avec CTR | ✅ | analyzeAd() renvoie score, ctr_estimate, active_days, engagement_level |
 | Analyse IA détaillée (hook, angle, émotion, structure, audience, CTA) | ✅ | Présent dans l'onglet Analysis |
 | Remix AI avec inputs marque / produit / ton / objectif | ✅ | Présent dans l'onglet Remix |
-| Génération de variations multiples (5 hooks, 5 headlines, 5 CTA…) | ❌ | Le remix génère une seule version à la fois |
-| Script UGC structuré (scènes) | ❌ | Le remix produit image prompts mais pas de script vidéo |
+| Génération de variations multiples (5 hooks, 5 headlines, 5 CTA…) | ✅ | remixVariations() existe déjà |
+| Script UGC structuré (scènes) | ✅ | remixAd() produit ugc_video_script avec scènes numérotées |
 | Sauvegarde en projet avec versions | ✅ / ⏳ | SaveButton + /saved existent ; les versions multiples ne sont pas gérées |
 | Import Meta Ads Library | ⏳ | Bloqué par l'App Review Meta (ads_read) |
 
-**Conclusion** : Le MVP couvre le cœur du use case (analyse + remix + auth + sauvegarde). Les gaps concernent principalement la recherche avancée, les variations en un clic, et le script UGC — autant de briques identifiées pour la roadmap.
+**Conclusion** : Le MVP couvre presque tout le cœur du use case ! Les gaps restants :
+1. Recherche avancée (Meta Ads Library et versions multiples de projets, et l'App Review Meta !

@@ -172,8 +172,27 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
     setSuccess("");
 
     try {
-      console.log('Calling supabase.auth.signUp');
-      const { error, data: authData } = await supabase.auth.signUp({
+      if (mode === "login") {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: data.email,
+          password: data.password,
+        });
+        if (error) throw error;
+        router.refresh();
+        router.push("/dashboard");
+        return;
+      }
+
+      if (mode === "reset") {
+        const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+          redirectTo: `${appUrl}/login`,
+        });
+        if (error) throw error;
+        setSuccess("Check your email for the reset link.");
+        return;
+      }
+
+      const { error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
@@ -181,12 +200,7 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
           emailRedirectTo: `${appUrl}/signup/confirmation`,
         },
       });
-      console.log('Sign up complete - error:', error, 'authData:', authData);
-      if (error) {
-        console.error('Supabase signUp error:', error);
-        throw error;
-      }
-      console.log('Setting success message and switching to login');
+      if (error) throw error;
       setSuccess("Account created! Check your email to confirm the account.");
       setMode("login");
     } catch (err: unknown) {

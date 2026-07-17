@@ -116,11 +116,12 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
         if (!value) return "Password is required";
         if (String(value).length < 8) return "At least 8 characters";
         if (mode === "signup") {
-          const strong =
-            /[A-Z]/.test(String(value)) &&
-            /[a-z]/.test(String(value)) &&
-            /\d/.test(String(value));
-          if (!strong) return "Must include upper, lower and a number";
+          const hasUpper = /[A-Z]/.test(String(value));
+          const hasLower = /[a-z]/.test(String(value));
+          const hasNumber = /[0-9]/.test(String(value));
+          if (!hasUpper || !hasLower || !hasNumber) {
+            return "Must include at least 1 uppercase letter, 1 lowercase letter, and 1 number";
+          }
         }
       }
       if (field === "confirmPassword" && mode === "signup" && value !== data.password)

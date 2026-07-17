@@ -166,43 +166,36 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
       setErrors(newErrors);
       return;
     }
+    console.log('appUrl:', appUrl);
     setLoading(true);
     setErrors({});
     setSuccess("");
 
     try {
-      console.log('Calling supabase auth function');
-      if (mode === "login") {
-        const { error } = await supabase.auth.signInWithPassword({
-          email: data.email,
-          password: data.password,
-        });
-        if (error) throw error;
-        router.push("/dashboard");
-        router.refresh();
-      } else if (mode === "signup") {
-        const { error, data: authData } = await supabase.auth.signUp({
-          email: data.email,
-          password: data.password,
-          options: {
-            data: { full_name: data.name },
-            emailRedirectTo: `${appUrl}/signup/confirmation`,
-          },
-        });
-        console.log('Sign up response:', { error, authData });
-        if (error) throw error;
-        setSuccess("Account created! Check your email to confirm.");
-        setMode("login");
-      } else {
-        const { error } = await supabase.auth.resetPasswordForEmail(data.email);
-        if (error) throw error;
-        setSuccess("Password reset link sent!");
-        setTimeout(() => setMode("login"), 2000);
+      console.log('Calling supabase.auth.signUp');
+      const { error, data: authData } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          data: { full_name: data.name },
+          emailRedirectTo: `${appUrl}/signup/confirmation`,
+        },
+      });
+      console.log('Sign up complete - error:', error, 'authData:', authData);
+      if (error) {
+        console.error('Supabase signUp error:', error);
+        throw error;
       }
+      console.log('Setting success message and switching to login');
+      setSuccess("Account created! Check your email to confirm the account.");
+      setMode("login");
     } catch (err: unknown) {
       console.error('Error in handleSubmit:', err);
-      setErrors({ general: err instanceof Error ? err.message : "An error occurred" });
+      setErrors({ 
+        general: err instanceof Error ? err.message : "An unexpected error occurred" 
+      });
     } finally {
+      console.log('Setting loading to false');
       setLoading(false);
     }
   };

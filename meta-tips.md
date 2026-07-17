@@ -86,8 +86,7 @@ Même en mode Live, `ads_read` nécessite une App Review. Les 3 champs suivants 
 - **Settings → Basic** → **App Icon** → upload
 
 ### 2. URL de la Politique de confidentialité
-- Tu as déjà une page `/privacy` dans l'app → `http://localhost:3000/privacy` (local)
-- Ou `https://ton-domaine.com/privacy` si déployé
+- Tu as déjà une page `/privacy` dans l'app → `https://winning-ads-one.vercel.app/privacy`
 - **Settings → Basic** → **Privacy Policy URL**
 
 ### 3. Catégorie

@@ -56,7 +56,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-lg font-semibold text-foreground">6. Contact</h2>
           <p className="mt-2">
-            For privacy-related inquiries, contact us at privacy@winningads.app.
+            For privacy-related inquiries, contact us at dxne2k@gmail.com.
           </p>
         </section>
       </div>

@@ -180,7 +180,7 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
           password: data.password,
           options: {
             data: { full_name: data.name },
-            redirectTo: `${appUrl}/signup/confirmation`,
+            emailRedirectTo: `${appUrl}/signup/confirmation`,
           },
         });
         if (error) throw error;

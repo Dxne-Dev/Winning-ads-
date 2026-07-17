@@ -13,6 +13,7 @@ import {
   IconTarget,
   IconZap,
 } from "@/components/icons";
+import { CurrentYear } from "@/components/current-year";
 
 export const metadata: Metadata = {
   title: "Winning Ads AI — Meta Ads Intelligence",
@@ -543,7 +544,7 @@ export default async function Home() {
             Winning Ads AI
           </div>
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} Winning Ads AI. All rights reserved.
+            &copy; <CurrentYear /> Winning Ads AI. All rights reserved.
           </p>
         </div>
       </footer>

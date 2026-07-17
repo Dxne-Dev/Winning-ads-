@@ -2,8 +2,8 @@ import { createServerClientForApp } from "@/lib/supabase/server";
 import { AdCard } from "@/components/ad-card";
 import { EmptyState } from "@/components/states";
 import { PageHeader } from "@/components/page-header";
-// import { MetaAdsSearch } from "@/components/meta-ads-search";
-import { IconGrid } from "@/components/icons";
+import { MetaAdsSearch } from "@/components/MetaAdsSearch";
+import { IconGrid, IconSparkles } from "@/components/icons";
 import type { Ad } from "@/types";
 
 export default async function AdsPage() {
@@ -23,13 +23,13 @@ export default async function AdsPage() {
         description="Discover high-performing Meta ads."
       />
 
-      {/* <div className="rounded-2xl border border-border/50 bg-card/50 p-6 backdrop-blur-sm">
+      <div className="rounded-2xl border border-border/50 bg-card/50 p-6 backdrop-blur-sm">
         <div className="mb-4 flex items-center gap-2 text-sm font-medium">
           <IconSparkles className="h-4 w-4 text-cta" />
           Import from Meta Ads Library
         </div>
         <MetaAdsSearch />
-      </div> */}
+      </div>
 
       {ads.length === 0 ? (
         <EmptyState

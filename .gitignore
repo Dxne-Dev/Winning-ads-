@@ -53,3 +53,7 @@ build/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# backups
+*.bak
+logs.md

@@ -80,7 +80,8 @@ function extractSnapshot(raw: RawAd): NormalizedAd["snapshot"] {
   if (!ctaText) {
     const cta = snapshot.cta || raw.cta;
     if (typeof cta === "object" && cta !== null) {
-      ctaText = (cta.title || cta.text || "") as string;
+      const ctaObj = cta as Record<string, any>;
+      ctaText = (ctaObj.title || ctaObj.text || "") as string;
     } else if (typeof cta === "string") {
       ctaText = cta;
     }

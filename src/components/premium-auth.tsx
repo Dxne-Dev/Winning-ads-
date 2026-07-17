@@ -148,6 +148,8 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('handleSubmit called with mode:', mode);
+    console.log('data:', data);
     const fields: (keyof FormData)[] =
       mode === "login"
         ? ["email", "password"]
@@ -155,8 +157,10 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
     const newErrors: FormErrors = {};
     fields.forEach((f) => {
       const err = validate(f, data[f]);
+      console.log('Field', f, 'value:', data[f], 'error:', err);
       if (err) newErrors[f] = err;
     });
+    console.log('newErrors:', newErrors);
     if (Object.keys(newErrors).length) {
       setErrors(newErrors);
       return;
@@ -166,6 +170,7 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
     setSuccess("");
 
     try {
+      console.log('Calling supabase auth function');
       if (mode === "login") {
         const { error } = await supabase.auth.signInWithPassword({
           email: data.email,
@@ -175,7 +180,7 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
         router.push("/dashboard");
         router.refresh();
       } else if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { error, data: authData } = await supabase.auth.signUp({
           email: data.email,
           password: data.password,
           options: {
@@ -183,6 +188,7 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
             emailRedirectTo: `${appUrl}/signup/confirmation`,
           },
         });
+        console.log('Sign up response:', { error, authData });
         if (error) throw error;
         setSuccess("Account created! Check your email to confirm.");
         setMode("login");
@@ -193,6 +199,7 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
         setTimeout(() => setMode("login"), 2000);
       }
     } catch (err: unknown) {
+      console.error('Error in handleSubmit:', err);
       setErrors({ general: err instanceof Error ? err.message : "An error occurred" });
     } finally {
       setLoading(false);

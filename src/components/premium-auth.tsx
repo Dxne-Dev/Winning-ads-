@@ -191,9 +191,15 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
       setMode("login");
     } catch (err: unknown) {
       console.error('Error in handleSubmit:', err);
-      setErrors({ 
-        general: err instanceof Error ? err.message : "An unexpected error occurred" 
-      });
+      let errorMessage = "An unexpected error occurred";
+      if (err instanceof Error) {
+        if (err.message.includes("429") || err.message.includes("Too Many Requests")) {
+          errorMessage = "Too many attempts! Please wait a few minutes and try again, or use a different email address.";
+        } else {
+          errorMessage = err.message;
+        }
+      }
+      setErrors({ general: errorMessage });
     } finally {
       console.log('Setting loading to false');
       setLoading(false);
@@ -272,7 +278,7 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={(e) => { e.preventDefault(); handleSubmit(e); }} action="#" className="space-y-4">
           {mode === "signup" && (
             <FieldWrapper error={errors.name}>
               <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />

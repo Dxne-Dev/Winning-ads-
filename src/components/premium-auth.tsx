@@ -173,11 +173,14 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
 
     try {
       if (mode === "login") {
-        const { error } = await supabase.auth.signInWithPassword({
+        console.log('Starting Supabase signInWithPassword...');
+        const { data: authData, error } = await supabase.auth.signInWithPassword({
           email: data.email,
           password: data.password,
         });
+        console.log('Supabase signInWithPassword result:', { authData, error });
         if (error) throw error;
+        console.log('Login successful! Redirecting to dashboard...');
         router.refresh();
         router.push("/dashboard");
         return;

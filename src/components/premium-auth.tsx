@@ -101,6 +101,7 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
   const validate = useCallback(
     (field: keyof FormData, value: string | boolean) => {
@@ -177,7 +178,10 @@ export function PremiumAuth({ initialMode = "login" }: { initialMode?: AuthMode 
         const { error } = await supabase.auth.signUp({
           email: data.email,
           password: data.password,
-          options: { data: { full_name: data.name } },
+          options: {
+            data: { full_name: data.name },
+            redirectTo: `${appUrl}/signup/confirmation`,
+          },
         });
         if (error) throw error;
         setSuccess("Account created! Check your email to confirm.");

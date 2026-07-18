@@ -16,11 +16,15 @@ export async function signUpAction(formData: FormData) {
   const email = String(formData.get("email"));
   const password = String(formData.get("password"));
   const fullName = String(formData.get("full_name") ?? "");
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/$/, "");
   const supabase = await createServerClientForApp();
   const { error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { full_name: fullName } },
+    options: { 
+      data: { full_name: fullName },
+      emailRedirectTo: `${appUrl}/auth/callback`
+    },
   });
   if (error) redirect(`/signup?error=${encodeURIComponent(error.message)}`);
   redirect("/signup/confirmation");

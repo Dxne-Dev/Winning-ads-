@@ -89,9 +89,11 @@ create policy "saved_ads owner all" on public.saved_ads for all using (auth.uid 
 drop policy if exists "ai_generations owner all" on public.ai_generations;
 create policy "ai_generations owner all" on public.ai_generations for all using (auth.uid () = user_id) with check (auth.uid () = user_id);
 
--- ads policies (public read, admin write via service role)
+-- ads policies (public read, authenticated users can insert)
 drop policy if exists "ads public read" on public.ads;
 create policy "ads public read" on public.ads for select using (true);
+drop policy if exists "ads authenticated insert" on public.ads;
+create policy "ads authenticated insert" on public.ads for insert with check (auth.role() = 'authenticated');
 
 -- Trigger: create user profile on signup
 create or replace function public.handle_new_user ()

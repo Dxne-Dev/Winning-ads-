@@ -70,45 +70,15 @@ export function MetaAdsSearch() {
     setError("");
     setResults([]);
     try {
-      // TODO: Replace this with actual API call to fetch ads!
-      // For now, use sample data to test the parser!
-      const sampleRawData = [
-        {
-          ad_archive_id: "3804712299743449",
-          page_id: "571062419989773",
-          page_name: "Debonair Men's Salon",
-          publisher_platform: ["FACEBOOK", "INSTAGRAM"],
-          snapshot: {
-            body: {
-              text: "Time is money, and we’re saving you both! Seize the day with a grand discount on all services..."
-            },
-            cta_text: "Send WhatsApp message",
-            images: [
-              {
-                original_image_url: "https://scontent-ams4-1.xx.fbcdn.net/v/t39.35426-6/464806700_514824171533348.jpg"
-              }
-            ]
-          },
-          page_profile_uri: "https://www.facebook.com/debonairmensalon/",
-          page_like_count: 87467,
-          start_date: 1730271600,
-          end_date: 1730271600,
-          categories: ["UNKNOWN"]
-        }
-      ];
-      const normalizedAds = parseAds(sampleRawData);
-      const mappedAds = normalizedAds.map((ad) => ({
-        source: "meta_archive",
-        platform: ad.publisher_platform?.[0] || "meta",
-        advertiser: ad.page_name || null,
-        thumbnail_url: ad.snapshot?.images?.[0]?.original_image_url || null,
-        headline: ad.snapshot?.cta_text || null,
-        body: ad.snapshot?.body?.text || null,
-        cta: ad.snapshot?.cta_text || null,
-        niche: null,
-        meta_ad_id: ad.ad_archive_id,
-      }));
-      setResults(mappedAds);
+      const params = new URLSearchParams({
+        q: term,
+        country,
+        limit: "10"
+      });
+      const res = await fetch(`/api/ads?${params}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Search failed");
+      setResults(data.ads);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Search failed");
     } finally {

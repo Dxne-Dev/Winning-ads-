@@ -57,3 +57,8 @@ next-env.d.ts
 # backups
 *.bak
 logs.md
+
+# local files
+todo.md
+error-ad.md
+facebook-ads-library-scraper-main/

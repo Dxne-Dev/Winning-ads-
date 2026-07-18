@@ -8,7 +8,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { IconGrid, IconSearch, IconArrowRight, IconSparkles, IconTarget } from "@/components/icons";
-import { parseAds } from "@/lib/facebook-ads-scraper";
 
 type FoundAd = {
   source: string;
@@ -72,8 +71,9 @@ export function MetaAdsSearch() {
     try {
       const params = new URLSearchParams({
         q: term,
+        ad_type: adType,
         country,
-        limit: "10"
+        limit: "10",
       });
       const res = await fetch(`/api/ads?${params}`);
       const data = await res.json();

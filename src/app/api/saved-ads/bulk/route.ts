@@ -16,11 +16,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No ads to import" }, { status: 400 });
     }
 
-    // Remove meta_ad_id and user_id from ads to insert
-    const adsToInsert = ads.map(ad => {
-      const { meta_ad_id, user_id, ...rest } = ad;
-      return rest;
-    });
+    // Only keep the columns that exist in the ads table schema
+    const adsToInsert = ads.map((ad) => ({
+      source: ad.source ?? "meta_archive",
+      platform: ad.platform ?? "meta",
+      advertiser: ad.advertiser ?? null,
+      thumbnail_url: ad.thumbnail_url ?? null,
+      video_url: ad.video_url ?? null,
+      headline: ad.headline ?? null,
+      body: ad.body ?? null,
+      cta: ad.cta ?? null,
+      niche: ad.niche ?? null,
+      country: ad.country ?? null,
+      engagement: typeof ad.engagement === "object" && ad.engagement !== null ? ad.engagement : {},
+    }));
 
     // Insert ads into ads table
     const { data: insertedAds, error: insertError } = await supabase

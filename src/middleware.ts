@@ -39,7 +39,7 @@ export async function middleware(request: NextRequest) {
 
   // Protected routes (all routes under /(app) including dashboard)
   if (request.nextUrl.pathname.startsWith("/dashboard") || 
-      request.nextUrl.pathname.startsWith("/ads") || 
+      request.nextUrl.pathname.startsWith("/ad-library") || 
       request.nextUrl.pathname.startsWith("/projects") || 
       request.nextUrl.pathname.startsWith("/saved")) {
     if (!user) {

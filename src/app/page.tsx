@@ -174,7 +174,7 @@ export default async function Home() {
                   <IconArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
-              <Link href="/ads">
+              <Link href="/ad-library">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
                   Explore ad library
                 </Button>
@@ -524,7 +524,7 @@ export default async function Home() {
                     <IconArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
-                <Link href="/ads">
+                <Link href="/ad-library">
                   <Button variant="ghost" size="lg">
                     Browse ad library
                   </Button>

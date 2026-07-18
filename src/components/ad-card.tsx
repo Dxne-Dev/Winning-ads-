@@ -6,7 +6,7 @@ import type { Ad } from "@/types";
 
 export function AdCard({ ad }: { ad: Ad }) {
   return (
-    <Link href={`/ads/${ad.id}`} className="group block">
+    <Link href={`/ad-library/${ad.id}`} className="group block">
       <Card className="overflow-hidden transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md">
         <div className="relative flex aspect-video w-full items-center justify-center overflow-hidden bg-muted">
           {ad.thumbnail_url ? (

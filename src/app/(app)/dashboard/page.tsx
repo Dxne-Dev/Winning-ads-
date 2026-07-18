@@ -19,14 +19,14 @@ import {
 
 const QUICK = [
   {
-    href: "/ads",
+    href: "/ad-library",
     title: "Browse ad library",
     description: "Discover high-performing Meta ads across every niche.",
     icon: IconGrid,
     color: "text-primary",
   },
   {
-    href: "/ads",
+    href: "/ad-library",
     title: "Analyze an ad",
     description: "Let AI decode the hook, angle, triggers and CTA.",
     icon: IconBrain,
@@ -102,7 +102,7 @@ export default async function DashboardPage() {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Link href="/ads">
+            <Link href="/ad-library">
               <Button size="sm" variant="outline">
                 <IconSearch className="h-4 w-4" />
                 Discover winners

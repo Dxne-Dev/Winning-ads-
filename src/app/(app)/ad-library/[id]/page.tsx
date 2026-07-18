@@ -30,7 +30,7 @@ export default async function AdDetailPage({
   return (
     <div className="space-y-8">
       <Link
-        href="/ads"
+        href="/ad-library"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         <IconArrowRight className="h-4 w-4 rotate-180" />
